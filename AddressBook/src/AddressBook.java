@@ -6,10 +6,12 @@ import java.util.Scanner;
 public class AddressBook {
 	private static List<Data> contact = new ArrayList<Data>();
 	private static void deleteByFirstName(String firstName) { 
-		Iterator<Data> iterator = contact.iterator(); 
-		Data temp = iterator.next();
-		if (temp.getF_name().equalsIgnoreCase(firstName)) {
-			iterator.remove(); return; 
+		Iterator<Data> iterator = contact.iterator();
+		while(iterator.hasNext()) {
+			Data temp = iterator.next();
+			if (temp.getF_name().equalsIgnoreCase(firstName)) {
+				iterator.remove(); 
+			}	
 		}
 	}    
     public static void displayContact() {
@@ -164,7 +166,7 @@ class Data
 	}
 	@Override
 	public String toString() {
-		return "Data [f_name=" + f_name + ", l_name=" + l_name + ", address=" + address + ", city=" + city + ", state="
-				+ state + ", zip=" + zip + ", phone_no=" + phone_no + ", email=" + email + "]";
+		return "Contact: FirstName=" + f_name + ", LastName=" + l_name + ", Address=" + address + ", City=" + city + ", State="
+				+ state + ", Zip=" + zip + ", Phone_no=" + phone_no + ", Email=" + email + "]";
 	}
 }
