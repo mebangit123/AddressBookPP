@@ -9,43 +9,46 @@ public class AddressBooks {
 	private String name;
 	private static Map<String, AddressBooks> map = new HashMap<>();
 	private static Set<Person> contact = new HashSet<>();
-	public AddressBooks() {}
+
+	public AddressBooks() {
+	}
+
 	public AddressBooks(String name, Set<Person> contact) {
 		this.name = name;
 		this.contact = contact;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "AddressBooks [name=" + name+" "+contact;
+		return "AddressBooks [name=" + name + " " + contact;
 	}
+	private static Scanner sc = new Scanner(System.in);
 	public static void addContact() {
-		Scanner sc = new Scanner(System.in);    
-    	int exit = 0; 
-    	while (exit != 2) { 
-    		System.out.println("Enter First Name: "); 
-		    String f_name = sc.next(); 
-		    System.out.println("Enter Last Name: "); 
-		    String l_name = sc.next(); 
-		    System.out.println("Enter email: "); 
-		    String email = sc.next();
-		    System.out.println("Enter Address: "); 
-		    String address = sc.next();
-		    System.out.println("Enter City: "); 
-		    String city = sc.next();
-		    System.out.println("Enter State: "); 
-		    String state = sc.next();
-		    System.out.println("Enter Zip: "); 
-		    int zip = sc.nextInt();
-		    System.out.println("Enter Phone_NO: "); 
-		    int phone_no = sc.nextInt();
-		    if(!checkDuplicate(f_name)) {
-		    contact.add(new Person(f_name, l_name, address, city, state, zip, phone_no, email));	
-		    }
-		    System.out.println("Would you like to add someone else? 1: Yes, 2: No"); 
-		    exit = sc.nextInt();
-    	}
-	} 		  
+		int exit = 0;
+		while (exit != 2) {
+			System.out.println("Enter First Name: ");
+			String f_name = sc.next();
+			System.out.println("Enter Last Name: ");
+			String l_name = sc.next();
+			System.out.println("Enter email: ");
+			String email = sc.next();
+			System.out.println("Enter Address: ");
+			String address = sc.next();
+			System.out.println("Enter City: ");
+			String city = sc.next();
+			System.out.println("Enter State: ");
+			String state = sc.next();
+			System.out.println("Enter Zip: ");
+			int zip = sc.nextInt();
+			System.out.println("Enter Phone_NO: ");
+			int phone_no = sc.nextInt();
+			if (!checkDuplicate(f_name)) {
+				contact.add(new Person(f_name, l_name, address, city, state, zip, phone_no, email));
+			}
+			System.out.println("Would you like to add someone else? 1: Yes, 2: No");
+			exit = sc.nextInt();
+		}
+	}
 
 	public static boolean checkDuplicate(String f_name) {
 		for (Person c : contact) {
@@ -56,10 +59,37 @@ public class AddressBooks {
 		}
 		return false;
 	}
+	public static void searchByCity_or_State() {
+    	System.out.println("Enter CityName: ");
+    	String city = sc.next();
+    	contact.stream().filter(c -> c.getCity().equals(city)).forEach(cn -> System.out.println(cn));
+    }
+	//Main method.
     public static void main(String[] args) {	  	
-    	addContact();
-    	map.put("Family", new AddressBooks("Family", contact));
-    	map.forEach((key, value) -> System.out.println(key + " : " + value));
+    	Scanner sc = new Scanner(System.in);
+    	int exit = 0;
+    	int menu;
+    	 do {
+    		System.out.println(" 0. Exit. ");
+      	  	System.out.println(" 1. Add Contact. ");
+      	  	System.out.println(" 2. Display Contact. ");
+      	  	System.out.println(" 3. Search contact by City");
+        	menu = sc.nextInt();
+        	switch(menu) {
+        	case 1:
+        		addContact();
+        		break;
+        	case 2:
+        	map.put("Family", new AddressBooks("Family", contact));
+        	map.forEach((key, value) -> System.out.println(key + " : " + value));
+        	break;
+        	case 3:
+        		searchByCity_or_State();
+        		break;
+        	default:
+        		System.out.println("Invalid Input...");
+        	}	
+    	}while(menu != exit);
    }
 }
 
