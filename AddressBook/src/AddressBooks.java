@@ -1,24 +1,28 @@
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
 public class AddressBooks {
-	
+	private String name;
+	private static Map<String, AddressBooks> map = new HashMap<>();
 	private static Set<Person> contact = new HashSet<>();
-	
-	public static void displayContact() {
-    	if(contact.isEmpty())
-    		System.out.println("The list is empty");
-    	for(Person c : contact) {
-    		System.out.println(c);
-    	}
+	public AddressBooks() {}
+	public AddressBooks(String name, Set<Person> contact) {
+		this.name = name;
+		this.contact = contact;
 	}
-    
-	public static void addContact() {    	
+	
+	@Override
+	public String toString() {
+		return "AddressBooks [name=" + name+" "+contact;
+	}
+	public static void addContact() {
 		Scanner sc = new Scanner(System.in);    
-    	int menu = 0; 
-    	while (menu != 2) { 
+    	int exit = 0; 
+    	while (exit != 2) { 
     		System.out.println("Enter First Name: "); 
 		    String f_name = sc.next(); 
 		    System.out.println("Enter Last Name: "); 
@@ -35,17 +39,27 @@ public class AddressBooks {
 		    int zip = sc.nextInt();
 		    System.out.println("Enter Phone_NO: "); 
 		    int phone_no = sc.nextInt();
-		    contactList(new Person(f_name, l_name, address, city, state, zip, phone_no, email));
+		    if(!checkDuplicate(f_name)) {
+		    contact.add(new Person(f_name, l_name, address, city, state, zip, phone_no, email));	
+		    }
 		    System.out.println("Would you like to add someone else? 1: Yes, 2: No"); 
-		    menu = sc.nextInt();
+		    exit = sc.nextInt();
     	}
 	} 		  
-    private static void contactList(Person person) {
-    	contact.add(person);
-    }
+
+	public static boolean checkDuplicate(String f_name) {
+		for (Person c : contact) {
+			if (c.getF_name().equals(f_name)) {
+				System.out.println("Duplicate found");
+				return true;
+			}
+		}
+		return false;
+	}
     public static void main(String[] args) {	  	
     	addContact();
-    	displayContact();
+    	map.put("Family", new AddressBooks("Family", contact));
+    	map.forEach((key, value) -> System.out.println(key + " : " + value));
    }
 }
 
@@ -69,6 +83,9 @@ class Person {
 		this.zip = zip;
 		this.phone_no = phone_no;
 		this.email = email;
+	}
+	public Person() {
+		// TODO Auto-generated constructor stub
 	}
 	public String getF_name() {
 		return f_name;
