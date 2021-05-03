@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,9 +8,9 @@ import java.util.Set;
 
 public class AddressBooks {
 	private String name;
-	private static Map<String, AddressBooks> map = new HashMap<>();
 	private static Set<Person> contact = new HashSet<>();
-
+	private static Map<String, AddressBooks> map = new HashMap<>();
+	private static Scanner sc = new Scanner(System.in);
 	public AddressBooks() {
 	}
 
@@ -20,9 +21,15 @@ public class AddressBooks {
 
 	@Override
 	public String toString() {
-		return "AddressBooks [name=" + name + " " + contact;
+		return "AddressBooks: " + name + " " + contact;
 	}
-	private static Scanner sc = new Scanner(System.in);
+	public static void sortByAlphabet() {
+				contact.stream()
+				.sorted(Comparator.comparing(
+				        Person::getF_name))
+				.forEach(c -> System.out.println(c));
+				        
+	}
 	public static void addContact() {
 		int exit = 0;
 		while (exit != 2) {
@@ -53,7 +60,7 @@ public class AddressBooks {
 	public static boolean checkDuplicate(String f_name) {
 		for (Person c : contact) {
 			if (c.getF_name().equals(f_name)) {
-				System.out.println("Duplicate found");
+				System.out.println("Duplicate found!");
 				return true;
 			}
 		}
@@ -64,6 +71,12 @@ public class AddressBooks {
     	String city = sc.next();
     	contact.stream().filter(c -> c.getCity().equals(city)).forEach(cn -> System.out.println(cn));
     }
+	public static void viewPersonByCity_or_State() {
+		System.out.println("Enter CityName: ");
+    	String city = sc.next();
+    	contact.stream().filter(c -> c.getCity().equals(city)).forEach(cn -> System.out.println(cn.getF_name()));
+    }
+	
 	//Main method.
     public static void main(String[] args) {	  	
     	Scanner sc = new Scanner(System.in);
@@ -74,6 +87,7 @@ public class AddressBooks {
       	  	System.out.println(" 1. Add Contact. ");
       	  	System.out.println(" 2. Display Contact. ");
       	  	System.out.println(" 3. Search contact by City");
+      	  	System.out.println(" 4. Sort By Alphabet");
         	menu = sc.nextInt();
         	switch(menu) {
         	case 1:
@@ -86,8 +100,10 @@ public class AddressBooks {
         	case 3:
         		searchByCity_or_State();
         		break;
+        	case 4:
+        		sortByAlphabet();
         	default:
-        		System.out.println("Invalid Input...");
+        		System.out.println("Exited");
         	}	
     	}while(menu != exit);
    }
